@@ -1,0 +1,52 @@
+<div class="wrapper">
+  <div class="card">
+    <div class="body">
+      <img class="logo" src="../../../assets/img/login.png" alt="logo" />
+      <h1 class="mb-4">Register</h1>
+      <form (ngSubmit)="register()" [formGroup]="registerUser">
+        <div class="input-group mb-3">
+          <div class="form-floating">
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="email"
+            />
+            <label>Email</label>
+          </div>
+          <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+        </div>
+        <div class="input-group mb-3">
+          <div class="form-floating">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              placeholder="password"
+            />
+            <label>Password</label>
+          </div>
+          <span class="input-group-text"><i class="bx bx-key"></i></span>
+        </div>
+        <div class="input-group mb-3">
+          <div class="form-floating">
+            <input
+              type="password"
+              class="form-control"
+              formControlName="repeatPassword"
+              placeholder="repeat password"
+            />
+            <label>Repeat password</label>
+          </div>
+          <span class="input-group-text"><i class="bx bx-repeat"></i></span>
+        </div>
+        <div class="d-grid gap-2">
+          <button class="btn btn-primary mt-3" type="submit">Registrar</button>
+        </div>
+        <p class="anchor mt-3">
+          Ya tienes cuenta? <a routerLink="/login">Ingresar</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</div>
