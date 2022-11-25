@@ -1,29 +1,66 @@
 <div class="wrapper">
-  <div class="card">
+  <div *ngIf="!loading" class="card">
     <div class="body">
-      <img class="logo" src="../../../assets/img/login.png" alt="logo" />
+      <img class="logo mt-4" src="../../../assets/img/cuenta-verificada.png" alt="logo" />
       <h1 class="mb-4">login</h1>
-      <form>
+      <form (ngSubmit)="login()" [formGroup]="loginUser">
         <div class="input-group mb-3">
           <div class="form-floating">
-            <input type="email" class="form-control" placeholder="email" />
+            <input
+              type="email"
+              class="form-control"
+              formControlName="email"
+              placeholder="email"
+            />
             <label>Email</label>
           </div>
           <span class="input-group-text"><i class="bx bx-envelope"></i></span>
+        </div>
+        <div class="text-start errorLabel mb-3">
+          <span
+            *ngIf="
+              loginUser.get('email')?.hasError('required') &&
+              loginUser.get('email')?.touched
+            "
+            class="text-danger"
+            >El <strong>correo</strong> es obligatorio</span
+          >
+        </div>
+        <div class="text-start errorLabel mb-3">
+          <span
+            *ngIf="
+              loginUser.get('email')?.hasError('email') &&
+              loginUser.get('email')?.touched
+            "
+            class="text-danger"
+            >El <strong>correo</strong> es inválido</span
+          >
         </div>
         <div class="input-group mb-3">
           <div class="form-floating">
             <input
               type="password"
               class="form-control"
+              formControlName="password"
               placeholder="password"
             />
             <label>Password</label>
           </div>
           <span class="input-group-text"><i class="bx bx-key"></i></span>
         </div>
+        <div class="text-start errorLabel mb-3">
+          <span
+            *ngIf="
+              loginUser.get('password')?.hasError('required') &&
+              loginUser.get('password')?.touched
+            "
+            class="text-danger"
+            >La <strong>contraseña</strong> es obligatoria</span
+          >
+        </div>
+        
         <div class="d-grid gap-2">
-          <button class="btn btn-primary mt-3" type="button">Ingresar</button>
+          <button class="btn btn-primary mt-3" type="submit" [disabled]="loginUser.invalid" >Ingresar</button>
         </div>
         <p class="anchor mt-3">
           No tienes cuenta? <a routerLink="/register-user">Registrar</a>
@@ -33,5 +70,6 @@
         </div>
       </form>
     </div>
-  </div>
+  </div>  
+  <app-spinner *ngIf="loading"></app-spinner>
 </div>

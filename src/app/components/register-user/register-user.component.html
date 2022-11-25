@@ -1,22 +1,28 @@
 <div class="wrapper">
-  <div class="card">
+  <div *ngIf="!loading" class="card">
     <div class="body">
       <img class="logo" src="../../../assets/img/login.png" alt="logo" />
       <h1 class="mb-4">Register</h1>
       <form (ngSubmit)="register()" [formGroup]="registerUser">
-        <div class="input-group mb-3">
+        <div class="input-group">
           <div class="form-floating">
             <input
-              type="email"
-              class="form-control"
-              formControlName="email"
-              placeholder="email"
+            type="email"
+            class="form-control"
+            formControlName="email"
+            placeholder="email"
             />
             <label>Email</label>
           </div>
           <span class="input-group-text"><i class="bx bx-envelope"></i></span>
         </div>
-        <div class="input-group mb-3">
+        <div class="text-start errorLabel mb-3">
+          <span *ngIf="registerUser.get('email')?.hasError('required') && registerUser.get('email')?.touched" class="text-danger">El <strong>correo</strong> es obligatorio</span>
+        </div>
+        <div class="text-start errorLabel mb-3">
+          <span *ngIf="registerUser.get('email')?.hasError('email') && registerUser.get('email')?.touched" class="text-danger">El <strong>correo</strong> es inválido</span>
+        </div>
+        <div class="input-group">
           <div class="form-floating">
             <input
               type="password"
@@ -28,7 +34,13 @@
           </div>
           <span class="input-group-text"><i class="bx bx-key"></i></span>
         </div>
-        <div class="input-group mb-3">
+        <div class="text-start errorLabel mb-3">
+          <span *ngIf="registerUser.get('password')?.hasError('required') && registerUser.get('password')?.touched" class="text-danger">La <strong>contraseña</strong> es obligatoria</span>
+        </div>
+        <div class="text-start errorLabel mb-3">
+          <span *ngIf="registerUser.get('password')?.hasError('minlength') && registerUser.get('password')?.touched" class="text-danger">La <strong>contraseña</strong> ser minimo 8 caracteres</span>
+        </div>
+        <div class="input-group">
           <div class="form-floating">
             <input
               type="password"
@@ -40,8 +52,11 @@
           </div>
           <span class="input-group-text"><i class="bx bx-repeat"></i></span>
         </div>
+        <div class="text-start errorLabel mb-3">
+          <span *ngIf="registerUser.get('repeatPassword')?.hasError('required') && registerUser.get('repeatPassword')?.touched" class="text-danger">Por favor repita la <strong>contraseña</strong></span>
+        </div>
         <div class="d-grid gap-2">
-          <button class="btn btn-primary mt-3" type="submit">Registrar</button>
+          <button class="btn btn-primary mt-3" [disabled]="registerUser.invalid" type="submit">Registrar</button>
         </div>
         <p class="anchor mt-3">
           Ya tienes cuenta? <a routerLink="/login">Ingresar</a>
@@ -49,4 +64,5 @@
       </form>
     </div>
   </div>
+  <app-spinner *ngIf="loading"></app-spinner>
 </div>

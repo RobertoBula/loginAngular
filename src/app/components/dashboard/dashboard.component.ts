@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -6,10 +8,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-
-  constructor() { }
+  dataUser: any;
+  loading: boolean = false; 
+  constructor(
+    private afAuth: AngularFireAuth,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
+    this.afAuth.currentUser.then(user => {
+      if (user && user.emailVerified) {
+        this.dataUser = user; 
+      }else{
+        this.router.navigate(['/login'])
+      }
+    })
   }
 
+  logOut(){
+    this.loading = true;  
+    this.afAuth.signOut().then(()=> this.router.navigate(['/login']))
+  }
+  
 }

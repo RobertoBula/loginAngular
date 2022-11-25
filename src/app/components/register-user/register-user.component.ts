@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { GoogleAuthProvider } from 'firebase/auth';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+import { FirebaseErrorService } from 'src/app/services/firebase-error.service';
 
 @Component({
   selector: 'app-register-user',
@@ -10,11 +13,17 @@ import Swal from 'sweetalert2';
 })
 export class RegisterUserComponent implements OnInit {
   registerUser: FormGroup;
+  loading: boolean = false;
 
-  constructor(private fb: FormBuilder, private afAuth: AngularFireAuth) {
+  constructor(
+    private fb: FormBuilder,
+    private afAuth: AngularFireAuth,
+    private router: Router,
+    private firebaseError: FirebaseErrorService
+  ) {
     this.registerUser = this.fb.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       repeatPassword: ['', Validators.required],
     });
   }
@@ -27,30 +36,33 @@ export class RegisterUserComponent implements OnInit {
     const repeatPassword = this.registerUser.value.repeatPassword;
 
     if (password !== repeatPassword) {
-      Swal.fire('Las contraseñas no coinciden!');
+      Swal.fire('Las contraseñas no coinciden!', 'Ups!');
       return;
     }
+    this.loading = true;
     this.afAuth
       .createUserWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log(user);
+      .then(() => {
+        this.checkMail();
       })
       .catch((error) => {
+        this.loading = false;
+
         console.log(error);
-        Swal.fire(this.firebaseError(error.code), 'Ups!');
+        Swal.fire(this.firebaseError.firebaseError(error.code), 'Ups!');
       });
   }
 
-  firebaseError(code: string) {
-    switch (code) {
-      case 'auth/email-already-in-use':
-        return 'Este usuario ya existe!';
-      case 'auth/weak-password':
-        return 'La contraseña es muy debil.';
-      case 'auth/invalid-email':
-        return 'El correo es inválido.';
-      default:
-        return 'Error desconocido';
-    }
+  checkMail() {
+    this.afAuth.currentUser
+      .then((user) => user?.sendEmailVerification())
+      .then(() => {
+        Swal.fire(
+          'Usuario creado con éxito!',
+          'Por favor verifique su correo electronico para poder acceder a la aplicación',
+          'success'
+        )
+        this.router.navigate(['/login']);
+      });
   }
 }
