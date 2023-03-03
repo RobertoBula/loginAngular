@@ -99,7 +99,7 @@
         "deploy": {
           "builder": "@netlify-builder/deploy:deploy",
           "options": {
-            "outputPath": "dist/login-firebase",
+            "outputPath": "dist",
             "netlifyToken": "",
             "siteId": ""
           }
