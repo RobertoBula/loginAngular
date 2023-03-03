@@ -55,11 +55,18 @@ export class LoginComponent implements OnInit {
           })
           this.router.navigate(['/check-mail'])
         }
-
       })
       .catch((error) => {
         Swal.fire(this.firebaseError.firebaseError(error.code), 'Ups!');
         this.loading = false;
       });
+  }
+
+  loginGoogle(){
+    this.afAuth.signInWithPopup(new GoogleAuthProvider()).then(()=>{
+      this.router.navigate(['/dashboard'])
+    }).catch((error)=>{
+      Swal.fire(this.firebaseError.firebaseError(error.code), 'Ups!');
+    })
   }
 }

@@ -33,7 +33,11 @@ export class RecoverPasswordComponent implements OnInit {
     this.afAuth
       .sendPasswordResetEmail(email)
       .then(() => {
-        Swal.fire('Por favor Revise su bandeja de entrada')
+        Swal.fire(
+          'Se le ha enviado un mail!',
+          'Por favor verifique su correo electronico',
+          'info'
+        )
         this.router.navigate(['/login']);
       })
       .catch((error) => {

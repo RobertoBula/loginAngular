@@ -17,7 +17,7 @@ export class FirebaseErrorService {
       case FirebaseCodeErrorEnum.InvalidEmail:
         return 'El correo es inválido.';
       case FirebaseCodeErrorEnum.UserNotFound:
-        return 'El usuario no existe!';
+        return 'El usuario no existe! por favor registrese';
       case FirebaseCodeErrorEnum.WrongPassword:
         return 'Contraseña incorrecta.';
       default:

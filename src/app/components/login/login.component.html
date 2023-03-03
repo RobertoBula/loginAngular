@@ -62,6 +62,11 @@
         <div class="d-grid gap-2">
           <button class="btn btn-primary mt-3" type="submit" [disabled]="loginUser.invalid" >Ingresar</button>
         </div>
+        <p class="text-secondary mt-3"> ó </p>
+        <a (click)="loginGoogle()">
+          <img class="google" src="../../../assets/img/2000px-Google_G_Logo.svg_.png" alt="">
+        </a>
+
         <p class="anchor mt-3">
           No tienes cuenta? <a routerLink="/register-user">Registrar</a>
         </p>
